@@ -1,0 +1,39 @@
+name: Build Plugin
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '4.7.2' # .NET Frameworkのプロジェクトをビルドできるようにする
+
+    - name: Restore NuGet packages
+      run: nuget restore
+
+    - name: Build with MSBuild
+      run: msbuild TextSyncBeepPlugin.sln /p:Configuration=Release
+
+    - name: Create YMME Package
+      run: |
+        mkdir ymme
+        mkdir ymme\Extension
+        copy path\to\Release\TalkSyncSound.dll ymme\Extension\
+        copy info.xml ymme\
+        powershell Compress-Archive -Path ymme\* -DestinationPath TextSyncBeepPlugin.ymme
+
+    - name: Upload YMME Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: TextSyncBeepPlugin
+        path: TextSyncBeepPlugin.ymme
