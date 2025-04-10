@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package>
+  <Name>テキスト同期音プラグイン</Name>
+  <Version>1.0</Version>
+  <Type>OutputExtension</Type>
+  <Description>テキストが表示されるタイミングで音を鳴らす出力拡張プラグインです。value0でWAVファイル、value1で音量指定が可能です。</Description>
+</Package>
